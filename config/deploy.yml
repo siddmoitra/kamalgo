@@ -1,0 +1,38 @@
+service: kamalgo
+env:
+  clear:
+    KAMALGO_DB_HOST: kamalgo-db
+    KAMALGO_DB_PORT: 5432
+    KAMALGO_DB_USER: kamalgo
+    KAMALGO_DB_NAME: kamalgo
+  secret:
+    - KAMALGO_DB_PASSWORD
+image: siddmoitra/kamalgo
+servers:
+  web:
+    - 54.173.124.241
+    - 98.82.50.189
+proxy:
+  ssl: false
+registry:
+  server: ghcr.io
+  username: siddmoitra
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+builder:
+  arch: amd64
+ssh:
+  user: ubuntu
+  port: 22
+  keys: [ "~/Downloads/key-kamal-demo.pem" ]
+accessories:
+  db:
+    image: postgres:17.5-alpine3.22
+    host: 54.173.124.241
+    port: "127.0.0.1:5432:5432"
+    env:
+      clear:
+        POSTGRES_USER: kamalgo
+        POSTGRES_DB: kamalgo
+      secret:
+        - POSTGRES_PASSWORD
